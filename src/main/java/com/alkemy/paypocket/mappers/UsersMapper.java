@@ -4,16 +4,17 @@ package com.alkemy.paypocket.mappers;
 
 import com.alkemy.paypocket.dtos.UsersDTO;
 import com.alkemy.paypocket.entities.Users;
-import com.alkemy.paypocket.repositories.UsersRepository;
+import com.alkemy.paypocket.servicies.UsersService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UsersMapper {
     @Autowired
-    UsersRepository usersRepository;
+    UsersService usersService;
 
-    public UsersDTO toUsersDTO(Users users){
+    public UsersDTO toUsersDTO(@NotNull Users users){
         UsersDTO dto = new UsersDTO();
         dto.setFirstName(users.getFirstName());
         dto.setLastName(users.getLastName());
@@ -27,7 +28,7 @@ public class UsersMapper {
     }
 
     public Users toUsers(UsersDTO dto){
-        Users u = usersRepository.findByEmail(dto.getEmail());
+        Users u = usersService.findByEmail(dto.getEmail());
         if (u == null) {  // Si no existe el usuario, lo creo
             u = new Users();
             u.setEmail(dto.getEmail());
