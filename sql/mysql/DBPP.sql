@@ -14,7 +14,7 @@ CREATE TABLE billetera_virtual.users(
 );
 
 CREATE TABLE billetera_virtual.roles(
-	id INT NOT NULL PRIMARY KEY,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     rolName VARCHAR(255) NOT NULL,
     rolDesc VARCHAR(255) NOT NULL,
 	creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
