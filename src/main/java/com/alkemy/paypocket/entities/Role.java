@@ -20,10 +20,10 @@ public class Role {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="rolName")
+    @Column(name="role_name")
     private String name;
 
-    @Column(name="rolDesc")
+    @Column(name="role_desc")
     private String descripcion;
 
     /*

@@ -1,79 +1,77 @@
 CREATE SCHEMA billetera_virtual;
 
-CREATE TABLE billetera_virtual.users(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    firstName VARCHAR(255) NOT NULL,
-    lastName VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    passwords VARCHAR(255) NOT NULL,
-    roleId INT NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    softDelete BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (roleId) REFERENCES roles(id)
-);
-
 CREATE TABLE billetera_virtual.roles(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    rolName VARCHAR(255) NOT NULL,
-    rolDesc VARCHAR(255) NOT NULL,
-	creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    role_name VARCHAR(255) NOT NULL,
+    role_desc VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE billetera_virtual.users(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    passwords VARCHAR(255) NOT NULL,
+    role_id INT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    soft_delete BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 
 CREATE TABLE billetera_virtual.accounts(
-	accountId INT AUTO_INCREMENT PRIMARY KEY,
-    accountCurrency VARCHAR(255) NOT NULL,
-    accountTransactionLimit DOUBLE NOT NULL,
-    accountBalance DOUBLE NOT NULL,
-    userId INT NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    softDelete BOOLEAN DEFAULT FALSE,
-	FOREIGN KEY (userId) REFERENCES users(id)
+	account_id INT AUTO_INCREMENT PRIMARY KEY,
+    account_currency VARCHAR(255) NOT NULL,
+    account_transaction_limit DOUBLE NOT NULL,
+    account_balance DOUBLE NOT NULL,
+    user_id INT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    soft_delete BOOLEAN DEFAULT FALSE,
+	FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
 CREATE TABLE billetera_virtual.transactions(
-	transactionsId INT PRIMARY KEY,
-    transactionsType VARCHAR(255) NOT NULL,
-    transactionsDescription VARCHAR(255) NOT NULL,
-    accountId INT NOT NULL,
-    transactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (accountId) REFERENCES accounts(accountId)
+	transactions_id INT PRIMARY KEY,
+    transactions_type VARCHAR(255) NOT NULL,
+    transactions_description VARCHAR(255) NOT NULL,
+    account_id INT NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
 CREATE TABLE billetera_virtual.fixed_term_deposits (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    ftdAmount DOUBLE NOT NULL,
-    accountId INT NOT NULL,
+    ftd_amount DOUBLE NOT NULL,
+    account_id INT NOT NULL,
     interest DOUBLE NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    closingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (accountId) REFERENCES accounts(accountId)
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    closing_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
 CREATE TABLE billetera_virtual.crypto (
-    cryptoId INT AUTO_INCREMENT PRIMARY KEY,
-    cryptoName VARCHAR(255) NOT NULL,
-    cryptoAmount DOUBLE NOT NULL,
-    accountId INT NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    closingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    softDelete BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (accountId) REFERENCES accounts(accountId)
+    crypto_id INT AUTO_INCREMENT PRIMARY KEY,
+    crypto_name VARCHAR(255) NOT NULL,
+    crypto_amount DOUBLE NOT NULL,
+    account_id INT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    closing_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    soft_delete BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
 
 
 CREATE TABLE credit_card(
-    creditCardId INT AUTO_INCREMENT PRIMARY KEY,
-    creditName VARCHAR (255) NOT NULL,
-    amountAvailable DOUBLE NOT NULL,
+    credit_card_id INT AUTO_INCREMENT PRIMARY KEY,
+    credit_name VARCHAR (255) NOT NULL,
+    amount_available DOUBLE NOT NULL,
     amount DOUBLE NOT NULL,
-    accountId INT NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    closingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    softDelete BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (accountId) REFERENCES accounts(accountId)
+    account_id INT NOT NULL,
+    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    closing_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    soft_delete BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id)
 );
