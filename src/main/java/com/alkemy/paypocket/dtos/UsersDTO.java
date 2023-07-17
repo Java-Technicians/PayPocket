@@ -27,6 +27,6 @@ public class UsersDTO {
 
     @NotEmpty(message = "El campo no debe estar vacío")
     @NotBlank(message = "El campo no puede estar en blanco")
-    private String passwords;
+    private String password;
 
 }
