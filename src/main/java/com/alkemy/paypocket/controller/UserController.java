@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("auth")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping(path = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> findAllListarlos() {
         return userService.findAll();
     }
