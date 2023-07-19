@@ -34,9 +34,13 @@ public class Helper {
      * Controlador para hacer Seeder, dispara consultas de la clase
      * Seeder  SOLO DE DEBUG COMENTAR EN PRODUCCION
      */
-    @GetMapping("seeder")
-    public String seeder(){
-        return this.seeder.migrate();
+    @GetMapping("seeder/rol")
+    public String seederRol(){
+        return this.seeder.seederRol();
+    }
+    @GetMapping("seeder/usuarios")
+    public String seederUsuarios(){
+        return this.seeder.seederUsuarios();
     }
 
 }

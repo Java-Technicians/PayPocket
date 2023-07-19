@@ -28,8 +28,6 @@ public class Seeder {
 
         String sql = "INSERT INTO user (creation_date, email, first_name, last_name, passwords, soft_delete, update_date, role_id) VALUES (";
         sql+="'"+now+"','"+email+"','"+nombre+"','"+apellido+"','"+password+"',"+1+",'"+now+"',"+id_rol+")";
-
-
         jdbcTemplate.update(sql);
     }
 
@@ -39,16 +37,23 @@ public class Seeder {
         String now = LocalDateTime.now().toString();
         String values = "VALUES('" + name + "','" + descripcion + "','" + now + "','" + now + "')";
         String sql = "INSERT INTO roles (role_name, role_desc, creation_date, update_date) " + values;
-
       
         jdbcTemplate.update(sql);
     }
     
-    public String migrate() {
+    public String seederRol() {
         try {
             this.rol("Administrador", "Rol de Administrador");
             this.rol("Regulares", "Rol Regular");
 
+            return "MIGRACION SEEDER ROL OK :)";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String seederUsuarios() {
+        try {
 
             for (int i = 0; i < 100; i++) {
                 this.usuario(1);
@@ -57,11 +62,14 @@ public class Seeder {
                 this.usuario(2);
             }
 
-            return "MIGRACION SEEDER OK :)";
+            return "MIGRACION SEEDER USUARIOS :)";
         } catch (Exception e) {
             return e.getMessage();
         }
     }
+
+
+
 
   
 
