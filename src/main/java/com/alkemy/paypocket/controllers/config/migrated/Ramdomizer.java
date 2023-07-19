@@ -14,7 +14,7 @@ public abstract class Ramdomizer {
             "Antonella", "Sebastián", "Micaela", "Gonzalo", "Delfina", "Ezequiel", "Agustina", "Alejandro", "Renata", "Iván",
             "Abril", "Francisco", "Bianca", "Leonardo", "Celeste", "Maximiliano", "Romina", "Manuel", "Melina", "Gabriel"
         };
-        return nombresArgentinos[Math.round(nombresArgentinos.length-1)];
+        return nombresArgentinos[(int)(Math.random()*50)];
      }
 
      
@@ -26,7 +26,7 @@ public abstract class Ramdomizer {
             "Jiménez", "Giménez", "Peralta", "Castro", "Ríos", "Navarro", "Ferreira", "Ojeda", "Luna", "Ponce",
             "Vega", "Cardozo", "Maidana", "Cabrera", "Vera", "Sosa", "Coronel", "Miranda", "Mansilla", "Benítez"
         };
-        return apellidosArgentinos[Math.round(apellidosArgentinos.length-1)];
+        return apellidosArgentinos[(int)(Math.random()*50)];
         
      }
 

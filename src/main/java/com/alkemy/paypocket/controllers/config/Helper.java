@@ -28,6 +28,9 @@ public class Helper {
     }
 
     /**
+     * 
+     * Previamente ejecutar CREATE SCHEMA billetera_virtual
+     * 
      * Controlador para hacer Seeder, dispara consultas de la clase
      * Seeder  SOLO DE DEBUG COMENTAR EN PRODUCCION
      */
