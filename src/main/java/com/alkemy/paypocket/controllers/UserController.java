@@ -9,8 +9,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.alkemy.paypocket.dtos.UserDto;
+import jakarta.validation.Valid;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.BindingResult;
+
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping("auth")
+@RequestMapping(path = "auth")
 public class UserController {
 
     @Autowired
@@ -29,4 +36,21 @@ public class UserController {
         return ResponseEntity.ok().build();
 
     }
+    @PostMapping(path = "/register")
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto, BindingResult result ){
+
+        if (result.hasErrors()){
+            List<String> erros = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(erros);
+        }
+
+        return ResponseEntity.ok(userService.saveUser(userDto));
+    }
+
+
+
 }
