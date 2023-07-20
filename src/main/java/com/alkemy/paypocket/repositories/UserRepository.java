@@ -9,4 +9,6 @@ import com.alkemy.paypocket.entities.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
   Boolean existsByEmail (String email);
+
+
 }

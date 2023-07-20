@@ -37,10 +37,18 @@ public class UserMapper {
             user.setRole(roleRepository.findByname("USER"));
         }
 
-
         return user;
-
-
     }
+
+    public UserDto toDTO(User user){
+
+        UserDto userDto = new UserDto();
+
+        userDto.setEmail(user.getEmail());
+
+        return userDto;
+    }
+
+
 
 }

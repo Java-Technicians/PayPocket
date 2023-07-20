@@ -21,7 +21,6 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping(path = "accounts")
 public class AccountController {
-
     @Autowired
     AccountService accountService;
 
@@ -38,8 +37,7 @@ public class AccountController {
     @GetMapping(path = "/{user_id}" )
     public ResponseEntity<List<Account>> getAcconuts(@PathVariable("user_id") Integer id){
 
-        List<Account> userAccounts = accountService.findAllUser(id);
+        List<Account> userAccounts = accountService.findAllAccountByUser(id);
         return ResponseEntity.ok(userAccounts);
     }
-    
 }

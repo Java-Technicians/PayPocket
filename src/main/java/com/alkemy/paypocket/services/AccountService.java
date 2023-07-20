@@ -1,5 +1,4 @@
 package com.alkemy.paypocket.services;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class AccountService {
     @Autowired
     AccountMapper accountMapper;
 
-    public List<Account> findAllUser(Integer id_user) {
+    public List<Account> findAllAccountByUser(Integer id_user) {
         return accountRepository.findAllByUser_Id(id_user);
     }
 

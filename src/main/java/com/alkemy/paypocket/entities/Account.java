@@ -43,7 +43,7 @@ public class Account {
     private boolean softDelete;
 
     @ManyToOne 
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
 
