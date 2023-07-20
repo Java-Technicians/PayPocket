@@ -42,4 +42,14 @@ public class UserService {
 
         return newUser;
     }
+
+    public Optional<User> findUser(Integer id){
+
+        if (userRepository.existsById(id)){
+            return userRepository.findById(id);
+        }else {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+    }
 }

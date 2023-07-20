@@ -51,6 +51,11 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(userDto));
     }
 
+    @GetMapping(path = "/user/{user_id}")
+    public ResponseEntity<?> getUser(@PathVariable("user_id") Integer id){
+        return ResponseEntity.ok(userService.findUser(id));
+    }
+
 
 
 }
