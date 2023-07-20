@@ -7,29 +7,39 @@ import org.springframework.stereotype.Component;
 
 import com.alkemy.paypocket.dtos.AccountDto;
 import com.alkemy.paypocket.entities.Account;
+import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.repositories.AccountRepository;
+import com.alkemy.paypocket.repositories.UserRepository;
 @Component
 public class AccountMapper {
     @Autowired
     AccountRepository accountRepository;
 
-    public Account toAccount(AccountDto accountDto) {
+    @Autowired
+    private UserRepository userRepository;
 
-        if (accountRepository.existsByCurrency(accountDto.getCurrency())) {
-            throw new IllegalArgumentException("cuenta registrada");
-        }
+   
 
-        Account account = new Account();
+ public Account toAccount(AccountDto accountDto) {
 
-        account.setBalance(accountDto.getBalance());
-        account.setCurrency(accountDto.getCurrency());
-        account.setCreationDate(LocalDate.now());
-        account.setSoftDelete(false);
-        account.setTransactionLimit(account.getTransactionLimit());
-        account.setId_account(account.getId_account());
 
-        return account;
 
-    }
+    Account account = new Account();
+
+    account.setBalance(accountDto.getBalance());
+    account.setCurrency(accountDto.getCurrency());
+    account.setCreationDate(LocalDate.now());
+    account.setSoftDelete(false);
+    account.setTransactionLimit(accountDto.getTransactionLimit());
+
+    Integer userId = accountDto.getUser_id();
+    
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Usuario con ID " + userId + " no encontrado."));
+
+    account.setUser(user);
+
+    return account;
+}
+
 
 }

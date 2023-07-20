@@ -28,10 +28,11 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping(path = "")
-    public ResponseEntity<?> registerAccount(@RequestBody @Valid AccountDto accountDto ){
+    public ResponseEntity<?> registerAccount(@RequestBody @Valid AccountDto accountDto, BindingResult result  ){
 
 
         return ResponseEntity.ok(accountService.saveAccount(accountDto));
+
     }
 
 
@@ -40,7 +41,7 @@ public class AccountController {
     public ResponseEntity<List<Account>> getAcconuts(@PathVariable("user_id") Integer id){
 
         List<Account> userAccounts = accountService.findAllUser(id);
-        return ResponseEntity.ok(accountService.findAllUser(id));
+        return ResponseEntity.ok(userAccounts);
     }
     
 }
