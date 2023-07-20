@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.services;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,22 @@ public class AccountService {
     AccountMapper accountMapper;
 
     public List<Account> findAllAccountByUser(Integer id_user) {
-        return accountRepository.findAllByUser_Id(id_user);
+
+
+        List<Account> allAccounts = accountRepository.findAllByUser_Id(id_user);
+
+        return allAccounts.stream()
+                .filter(account -> !account.isSoftDelete() && !account.getUser().getSoftDelete())
+                .collect(Collectors.toList());
     }
 
 
 
-    public Account saveAccount(AccountDto accountDto) {
-
+    public Account saveAccount(AccountDto accountDto)throws Exception {
+        
         Account newAccount = accountMapper.toAccount(accountDto);
         accountRepository.save(newAccount);
-
+    
         return newAccount;
     }
 }
