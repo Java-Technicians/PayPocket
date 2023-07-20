@@ -56,6 +56,19 @@ public class UserController {
         return ResponseEntity.ok(userService.findUser(id));
     }
 
+    @PatchMapping(path = "/user/{user_id}")
+    public ResponseEntity<?> updateUser(@PathVariable("user_id") Integer user_id, @RequestBody @Valid UserDto userDto, BindingResult result){
+        if (result.hasErrors()){
+            List<String> erros = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(erros);
+        }
+
+    return ResponseEntity.ok(userService.updateUser(userDto, user_id));
+    }
 
 
 }
