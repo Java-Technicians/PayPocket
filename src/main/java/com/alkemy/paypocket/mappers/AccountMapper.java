@@ -3,11 +3,12 @@ package com.alkemy.paypocket.mappers;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.alkemy.paypocket.dtos.AccountDto;
 import com.alkemy.paypocket.entities.Account;
 import com.alkemy.paypocket.repositories.AccountRepository;
-
+@Component
 public class AccountMapper {
     @Autowired
     AccountRepository accountRepository;
