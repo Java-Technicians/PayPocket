@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getUsers(){
-        List<User> userList = userService.findAll();
+        List<User> userList = userService.findAll().stream().filter(User -> User.getSoftDelete() == false).toList();
         return ResponseEntity.ok(userList);
     }
 }
