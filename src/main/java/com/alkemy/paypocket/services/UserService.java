@@ -20,8 +20,11 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(){
+        return userRepository.findAll()
+                .stream()
+                .filter(User -> !User.getSoftDelete())
+                .toList();
     }
 
     public void deleteUser(Integer id) {
