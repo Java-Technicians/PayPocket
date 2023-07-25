@@ -5,12 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alkemy.paypocket.dtos.AccountDto;
 import com.alkemy.paypocket.entities.Account;
@@ -39,5 +34,10 @@ public class AccountController {
 
         List<Account> userAccounts = accountService.findAllAccountByUser(id);
         return ResponseEntity.ok(userAccounts);
+    }
+
+    @PatchMapping(path = "/{account_id}")
+    public ResponseEntity<?> updateAccount(@PathVariable("account_id") Integer id, @RequestBody @Valid AccountDto accountDto, BindingResult result){
+        return ResponseEntity.ok(accountService.updateAccount(accountDto, id));
     }
 }
