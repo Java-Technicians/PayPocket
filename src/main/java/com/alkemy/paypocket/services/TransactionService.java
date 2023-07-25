@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.services;
 
+import com.alkemy.paypocket.dtos.PaymentDto;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.dtos.TransactionDto;
 import com.alkemy.paypocket.entities.Account;
@@ -22,7 +23,7 @@ public class TransactionService {
     @Autowired
     AccountRepository accountRepository;
 
-    public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto){
+    public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto) {
 
         try {
             transactionDto.setType("DEPOSITO"); /*Al ser solicitado por el EndPoint de deposito seteo el type en DEPOSITO*/
@@ -38,16 +39,36 @@ public class TransactionService {
             transactionRepository.save(transaction);
 
 
-            return new ResponseData<>(transaction,"Transaccion Guardada");
+            return new ResponseData<>(transaction, "Transaccion Guardada");
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace(); // Imprime el error en la consola (opcional)
-            return new ResponseData<>(null,"Error al registrar transaccion");
+            return new ResponseData<>(null, "Error al registrar transaccion");
         }
-
-
-
-
     }
 
+    public ResponseData<Transaction> saveSent(PaymentDto paymentDto) {
+
+        try {
+            Account accountPaymentRecipient = accountRepository.findById(paymentDto.getRecipientAccountId()).orElseThrow(() -> new Exception("No existe la cuenta"));
+            Account accountPaymentSender = accountRepository.findById(paymentDto.getSenderAccountId()).orElseThrow(() -> new Exception("No existe la cuenta"));
+
+            if(checkBalance(accountPaymentSender, paymentDto.getAmount()) && checkTransactionLimit(accountPaymentSender, paymentDto.getAmount())){
+
+            }
+        return new ResponseData<>(null, "Transaccion Guardada");
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprime el error en la consola (opcional)
+            return new ResponseData<>(null, "Error al registrar transaccion");
+        }
+    }
+
+    private Boolean checkTransactionLimit(Account account, Double amount) {
+        return  amount < account.getTransactionLimit();
+    }
+
+    private Boolean checkBalance(Account account, Double amount) {
+        return amount < account.getBalance();
+    }
 }
