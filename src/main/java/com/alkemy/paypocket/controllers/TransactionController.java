@@ -1,5 +1,4 @@
 package com.alkemy.paypocket.controllers;
-
 import com.alkemy.paypocket.dtos.PaymentDto;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.dtos.TransactionDto;
@@ -20,12 +19,14 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping(path = "/deposit")
-    public ResponseEntity<ResponseData<Transaction>> registerTransaction(@RequestBody TransactionDto transactionDto){
+
+    public ResponseEntity<ResponseData<Transaction>> registerDeposit(@RequestBody TransactionDto transactionDto){
 
         ResponseData<Transaction> responseData = transactionService.saveDeposit(transactionDto);
 
         return ResponseEntity.ok(responseData);
     }
+
 
     @PostMapping(path = "/sendArs")
     public ResponseEntity<ResponseData<Transaction>> registerTransactionArs(@RequestBody PaymentDto paymentDto){

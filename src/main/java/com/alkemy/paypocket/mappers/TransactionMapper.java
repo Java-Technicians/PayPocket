@@ -5,9 +5,11 @@ import com.alkemy.paypocket.entities.Transaction;
 import com.alkemy.paypocket.repositories.AccountRepository;
 import com.alkemy.paypocket.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+@Component
 public class TransactionMapper {
 
     @Autowired
