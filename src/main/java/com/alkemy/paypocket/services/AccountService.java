@@ -1,7 +1,11 @@
 package com.alkemy.paypocket.services;
 import java.time.LocalDate;
 import java.util.List;
+
 import java.util.Optional;
+
+import java.util.stream.Collectors;
+
 
 import com.alkemy.paypocket.message.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,6 @@ import com.alkemy.paypocket.repositories.AccountRepository;
 
 @Service
 public class AccountService {
-
     @Autowired
     AccountRepository accountRepository;
 
@@ -22,16 +25,22 @@ public class AccountService {
     AccountMapper accountMapper;
 
     public List<Account> findAllAccountByUser(Integer id_user) {
-        return accountRepository.findAllByUser_Id(id_user);
+
+
+        List<Account> allAccounts = accountRepository.findAllByUser_Id(id_user);
+
+        return allAccounts.stream()
+                .filter(account -> !account.isSoftDelete() && !account.getUser().getSoftDelete())
+                .collect(Collectors.toList());
     }
 
 
 
-    public Account saveAccount(AccountDto accountDto) {
-
+    public Account saveAccount(AccountDto accountDto)throws Exception {
+        
         Account newAccount = accountMapper.toAccount(accountDto);
         accountRepository.save(newAccount);
-
+    
         return newAccount;
     }
 
@@ -56,5 +65,6 @@ public class AccountService {
             return new ResponseData<>(null, "Cuenta no encontrada");
         }
     }
+
 
 }

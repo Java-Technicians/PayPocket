@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Component
 public class AccountMapper {
@@ -19,7 +20,7 @@ public class AccountMapper {
     @Autowired
     private UserRepository userRepository;
 
-    public Account toAccount(AccountDto accountDto) {
+    public Account toAccount(AccountDto accountDto) throws Exception {
 
         Account account = new Account();
 
@@ -39,9 +40,13 @@ public class AccountMapper {
 
         Integer userId = accountDto.getUser_id();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Usuario con ID " + userId + " no encontrado."));
+        Optional<User> user = userRepository.findById(userId);
 
-        account.setUser(user);
+        if(!user.isPresent() || user.get().getSoftDelete()){
+            throw  new IllegalArgumentException("Usuario con ID " + userId + " no encontrado.");
+        }
+
+        account.setUser(user.get());
 
         return account;
     }

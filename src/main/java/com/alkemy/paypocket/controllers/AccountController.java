@@ -22,8 +22,13 @@ public class AccountController {
     @PostMapping(path = "")
     public ResponseEntity<?> registerAccount(@RequestBody @Valid AccountDto accountDto, BindingResult result  ){
 
-
-        return ResponseEntity.ok(accountService.saveAccount(accountDto));
+        try {
+            return ResponseEntity.ok(accountService.saveAccount(accountDto));
+            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
 
     }
 
