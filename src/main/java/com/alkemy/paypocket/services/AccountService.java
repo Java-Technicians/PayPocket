@@ -2,6 +2,7 @@ package com.alkemy.paypocket.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.alkemy.paypocket.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,24 @@ public class AccountService {
         accountRepository.save(newAccount);
     
         return newAccount;
+    }
+
+    public Double updateBalance(Transaction transaction){
+
+        Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+
+        if ("DEPOSITO".equals(transaction.getType()) || "INCOME".equals(transaction.getType())) {
+            account.setBalance(account.getBalance() + transaction.getAmount());
+        } else if ("PAYMENT".equals(transaction.getType())) {
+            account.setBalance(account.getBalance() - transaction.getAmount());
+        } else {
+            throw new IllegalArgumentException("Tipo de transacción inválido");
+        }
+
+        accountRepository.save(account);
+
+        return account.getBalance();
+
+
     }
 }
