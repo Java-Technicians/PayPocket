@@ -22,6 +22,5 @@ public class PaymentDto {
     private Integer senderAccountId;
 
     @NotBlank(message = "Error de referencia")
-    private Integer recipientAccountId;
+    private Integer recipientAccountId; }
 
-}
