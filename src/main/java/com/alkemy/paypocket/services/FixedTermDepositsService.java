@@ -75,10 +75,13 @@ public class FixedTermDepositsService {
 
 
         // El valor absoluto de dias entre la fecha de inicio y fecha Final 2022/04/01 - 2022/04/31 = 30
+        
         long dateDaysAbsolute = ChronoUnit.DAYS.between(deposit.getCreationDate(), deposit.getClosingDate());
+        Double interest_again = INTEREST*dateDaysAbsolute;
 
-        response.setInterest_again(INTEREST*dateDaysAbsolute); 
-        response.setNew_amount(INTEREST * dateDaysAbsolute * deposit.getAmount());
+        response.setInterest_again(interest_again);
+        Double increment_amount = (interest_again/100)+1;
+        response.setNew_amount(increment_amount*deposit.getAmount());
 
 
         return response;
