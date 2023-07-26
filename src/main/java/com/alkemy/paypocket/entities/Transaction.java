@@ -1,6 +1,7 @@
 package com.alkemy.paypocket.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "type", nullable = false, length = 100)
+    @Column(name = "type", length = 100)
     private String type;
 
     @Column(name = "description")
@@ -31,6 +32,10 @@ public class Transaction {
 
     @Column(name = "transactionDate")
     private LocalDate transactionDate;
+
+
+    @Column(name = "account_recipient_id")
+    private Integer recipientAccountId;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
