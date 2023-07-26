@@ -24,7 +24,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "type", nullable = false, length = 100)
+    @Column(name = "type", length = 100)
     private String type;
 
     @Column(name = "description")

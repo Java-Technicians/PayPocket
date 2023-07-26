@@ -60,13 +60,19 @@ public class TransactionService {
 
     }
 
-    public ResponseData<Transaction> saveSent(PaymentDto paymentDto) {
+    public ResponseData<Transaction> saveSent(TransactionDto transactionDto, Integer user_id) {
 
         try {
-            Account accountPaymentRecipient = accountRepository.findById(paymentDto.getRecipientAccountId()).orElseThrow(() -> new Exception("No existe la cuenta"));
-            Account accountPaymentSender = accountRepository.findById(paymentDto.getSenderAccountId()).orElseThrow(() -> new Exception("No existe la cuenta"));
+            Transaction transactionIncome = transactionMapper.toTransaction(transactionDto);
+            Account accountPaymentSender = accountRepository.findById(user_id).orElseThrow(() -> new Exception("No existe la cuenta"));
+            Transaction transactionSender = saveTransactionSender(transactionIncome, accountPaymentSender);
+            transactionRepository.save(transactionIncome);
 
-            if(checkBalance(accountPaymentSender, paymentDto.getAmount()) && checkTransactionLimit(accountPaymentSender, paymentDto.getAmount())){
+            if(checkBalance(accountPaymentSender, transactionSender.getAmount()) && checkTransactionLimit(accountPaymentSender, transactionSender.getAmount())){
+                transactionIncome.setType("INCOME");
+                transactionSender.setType("PAYMENT");
+                accountService.updateBalance(transactionIncome);
+                accountService.updateBalance(transactionSender);
 
             }
         return new ResponseData<>(null, "Transaccion Guardada");
@@ -75,6 +81,17 @@ public class TransactionService {
             e.printStackTrace(); // Imprime el error en la consola (opcional)
             return new ResponseData<>(null, "Error al registrar transaccion");
         }
+    }
+
+    private Transaction saveTransactionSender(Transaction transaction, Account account) {
+        Transaction transactionSender = new Transaction();
+        transactionSender.setAccount(account);
+        transactionSender.setAmount(transaction.getAmount());
+        transactionSender.setDescription(transaction.getDescription());
+        transactionSender.setTransactionDate(transaction.getTransactionDate());
+        transactionSender.setType("PAYMENT");
+        return transactionRepository.save(transactionSender);
+
     }
 
     private Boolean checkTransactionLimit(Account account, Double amount) {
