@@ -25,4 +25,15 @@ public class CreditCardController {
         return new ResponseEntity<>(createdCreditCard, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCreditCard(@PathVariable Integer id) {
+        try {
+            creditCardService.deleteCreditCard(id);
+            return ResponseEntity.ok("Tarjeta de crédito eliminada con éxito.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

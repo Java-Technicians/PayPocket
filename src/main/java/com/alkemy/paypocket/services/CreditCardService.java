@@ -66,6 +66,17 @@ public class CreditCardService {
 
         return creditCardRepository.save(creditCard);
     }
+
+    public void deleteCreditCard(Integer id) {
+        CreditCard creditCard = creditCardRepository.findById(id).orElse(null);
+        if (creditCard == null) {
+            throw new RuntimeException("Tarjeta de crédito no encontrada");
+        }
+        creditCard.setSoftDelete(true);
+        creditCardRepository.save(creditCard);
+    }
+
+
 }
 
 
