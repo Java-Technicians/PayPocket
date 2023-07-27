@@ -32,7 +32,7 @@ public class FixedTermDepositsDto {
     @NotNull(message = "Campo amount es OBLIGATORIO")
     private double amount;
 
-    private Account account;
+    private Integer account_id;
 
   
 }

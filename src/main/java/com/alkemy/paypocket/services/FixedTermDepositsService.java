@@ -98,7 +98,11 @@ public class FixedTermDepositsService {
 
         this.validate(deposit);
 
-        Optional<Account> optionalAccount = accountRepository.findById(deposit.getAccount().getId_account());
+        if(termDeposit.getAccount_id()==null){
+            throw new Exception("No se ingreso un account_id de Cuenta");
+        }
+
+        Optional<Account> optionalAccount = accountRepository.findById(termDeposit.getAccount_id());
         if (optionalAccount.isPresent()) {
             Account existingAccount = optionalAccount.get();
 
@@ -106,13 +110,14 @@ public class FixedTermDepositsService {
                 /*
                  * Proceso de guardado de plazo fijo.
                  */
-
                 long dateDaysAbsolute = ChronoUnit.DAYS.between(deposit.getCreationDate(), deposit.getClosingDate());
                 
                 deposit.setInterest(INTEREST * dateDaysAbsolute);
                 existingAccount.setBalance(existingAccount.getBalance() - deposit.getAmount());
                 
                 accountRepository.save(existingAccount);
+                deposit.setAccount(existingAccount);
+                
                 fixedDepositRepository.save(deposit);
 
             } else {

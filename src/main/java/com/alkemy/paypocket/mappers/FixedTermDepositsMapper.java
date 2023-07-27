@@ -13,8 +13,7 @@ public class FixedTermDepositsMapper {
 
         Fixed_term_deposits newFixedDeposit = new Fixed_term_deposits();
 
-
-        newFixedDeposit.setAccount(transactionDto.getAccount());
+       
         newFixedDeposit.setClosingDate(transactionDto.getCloseDate());
         newFixedDeposit.setCreationDate(transactionDto.getCreateDate());
         newFixedDeposit.setAmount(transactionDto.getAmount());
