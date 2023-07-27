@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.mappers;
 
+import com.alkemy.paypocket.dtos.PaymentDto;
 import com.alkemy.paypocket.dtos.TransactionDto;
 import com.alkemy.paypocket.entities.Transaction;
 import com.alkemy.paypocket.repositories.AccountRepository;
@@ -29,6 +30,8 @@ public class TransactionMapper {
         newTransaction.setDescription(transactionDto.getDescription());
 
         return newTransaction;
+
     }
+
 
 }
