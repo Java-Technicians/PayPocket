@@ -22,32 +22,42 @@ public class TransactionService {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    AccountService accountService;
+
     public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto){
 
         try {
             transactionDto.setType("DEPOSITO"); /*Al ser solicitado por el EndPoint de deposito seteo el type en DEPOSITO*/
 
-            Transaction transaction = transactionMapper.toTransaction(transactionDto);
+            if (validDeposit(transactionDto)){
 
-            Account account = accountRepository.findById(transaction.getAccount().getId_account()).get();
+                Transaction transaction = transactionMapper.toTransaction(transactionDto);
 
-            account.setBalance(transaction.getAmount());
+                Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
 
-            accountRepository.save(account);
+                account.setBalance(accountService.updateBalance(transaction));
 
-            transactionRepository.save(transaction);
+                accountRepository.save(account);
+
+                transactionRepository.save(transaction);
 
 
-            return new ResponseData<>(transaction,"Transaccion Guardada");
+                return new ResponseData<>(transaction,"Transaccion Guardada");
+            }else{
+                return new ResponseData<>(null, "Transaccion no valida");
+            }
+
 
         }catch(Exception e){
             e.printStackTrace(); // Imprime el error en la consola (opcional)
             return new ResponseData<>(null,"Error al registrar transaccion");
         }
 
+    }
 
-
-
+    public Boolean validDeposit(TransactionDto transactionDto){
+        return "DEPOSITO".equals(transactionDto.getType()) && transactionDto.getAmount() > 0;
     }
 
 }
