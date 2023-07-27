@@ -19,7 +19,7 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     }
 
-    @PostMapping
+    @PostMapping(path="/register")
     public ResponseEntity<CreditCard> createCreditCard(@RequestBody CreditCardDto creditCardDto) {
         CreditCard createdCreditCard = creditCardService.createCreditCard(creditCardDto);
         return new ResponseEntity<>(createdCreditCard, HttpStatus.CREATED);

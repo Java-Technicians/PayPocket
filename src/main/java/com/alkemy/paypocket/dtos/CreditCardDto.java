@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.dtos;
 
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,10 @@ public class CreditCardDto {
     @NotNull(message = "Campo amount OBLIGATORIO")
     private Double amount;
 
-    @NotNull(message = "Campo account_id OBLIGATORIO")
-    private Integer account_id;
+    @NotNull(message = "Campo account OBLIGATORIO")
+    private  Integer  account_id;
 
+    @NotNull(message = "Campo user OBLIGATORIO")
+    private Integer user_id;
 
 }
