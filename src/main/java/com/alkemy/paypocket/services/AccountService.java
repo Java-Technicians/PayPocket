@@ -78,7 +78,31 @@ public class AccountService {
 
         return account.getBalance();
 
+    }
+
+    public Boolean compareAccountCurrency(Account accountSender, Account accountIncome){
+
+        List<Account> accountsSender = findAllAccountByUser(accountSender.getUser().getId());
+        List<Account> accountsIncome = findAllAccountByUser(accountIncome.getUser().getId());
+
+        // Filtrar los Account que tengan el tipo ARS (currency)
+
+        List<Account> arsAccountSender = accountsSender.stream()
+                .filter(account -> "ARS".equals(account.getCurrency()))
+                .collect(Collectors.toList());
+
+        List<Account> arsAccountIncome = accountsIncome.stream()
+                .filter(account -> "ARS".equals(account.getCurrency()))
+                .collect(Collectors.toList());
+
+        Boolean haveARSaccountSender = !arsAccountSender.isEmpty();
+        Boolean haveARSaccountIncome = !arsAccountIncome.isEmpty();
+
+
+        return (haveARSaccountIncome && haveARSaccountSender);
+
 
     }
+
 
 }

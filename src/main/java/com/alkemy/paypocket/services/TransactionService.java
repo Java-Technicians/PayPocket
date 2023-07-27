@@ -1,6 +1,6 @@
 package com.alkemy.paypocket.services;
 
-import com.alkemy.paypocket.dtos.PaymentDto;
+
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.dtos.TransactionDto;
 import com.alkemy.paypocket.entities.Account;
@@ -60,27 +60,33 @@ public class TransactionService {
 
     }
 
-    public ResponseData<Transaction> saveSent(TransactionDto transactionDto, Integer user_id) {
+    public ResponseData<Transaction> saveSentARS(TransactionDto transactionDto, Integer user_id) {
 
         try {
 
             Transaction transactionIncome = saveTransactionIncome(transactionDto);
             Transaction transactionSender = saveTransactionSender(transactionIncome, user_id);
 
-            System.out.println(transactionSender.getAccount().getCurrency());
+            Account accountIncome = transactionIncome.getAccount();
+            Account accountSender = transactionSender.getAccount();
 
-            if (checkTransactionLimit(transactionSender.getAccount(), transactionSender.getAmount())){
 
-                if (checkBalance(transactionSender.getAccount() , transactionSender.getAmount())){
-                    if (checkAccount(transactionSender.getAccount() , transactionIncome.getAccount())){
+            if (checkTransactionLimit(accountSender, transactionSender.getAmount())){
 
-                        accountService.updateBalance(transactionIncome);
-                        accountService.updateBalance(transactionSender);
+                if (checkBalance(accountSender, transactionSender.getAmount())){
+                    if (accountService.compareAccountCurrency(accountSender, accountIncome)){
+                        if (!accountIncome.getId_account().equals(accountSender.getId_account())){
 
-                        transactionRepository.save(transactionIncome);
-                        transactionRepository.save(transactionSender);
+                            accountService.updateBalance(transactionIncome);
+                            accountService.updateBalance(transactionSender);
 
-                        return new ResponseData<>(transactionSender, "Transaccion Guardada");
+                            transactionRepository.save(transactionIncome);
+                            transactionRepository.save(transactionSender);
+
+                            return new ResponseData<>(transactionSender, "Transaccion Guardada");
+                        }else {
+                            return new ResponseData<>(null, "Error de Coincidencia de tipo de Account");
+                        }
                     }else {
                         return new ResponseData<>(null, "Error de Coincidencia de tipo de Currency");
                     }
@@ -131,8 +137,6 @@ public class TransactionService {
         return amount <= account.getBalance();
     }
 
-    private Boolean checkAccount(Account accountSender, Account accountIncome){
-        return (accountSender.getCurrency().equals(accountIncome.getCurrency()));
-    }
+
 
 }

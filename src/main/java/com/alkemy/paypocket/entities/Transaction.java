@@ -33,10 +33,6 @@ public class Transaction {
     @Column(name = "transactionDate")
     private LocalDate transactionDate;
 
-
-    @Column(name = "account_recipient_id")
-    private Integer recipientAccountId;
-
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;

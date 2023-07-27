@@ -34,7 +34,7 @@ public class TransactionController {
     @PostMapping(path = "/sendArs/{user_id}")
     public ResponseEntity<?> registerTransactionArs(@PathVariable("user_id") Integer user_id, @RequestBody TransactionDto transactionDto){
 
-        return ResponseEntity.ok(transactionService.saveSent(transactionDto, user_id));
+        return ResponseEntity.ok(transactionService.saveSentARS(transactionDto, user_id));
     }
 
 }
