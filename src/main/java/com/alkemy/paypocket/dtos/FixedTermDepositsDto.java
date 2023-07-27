@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.alkemy.paypocket.entities.Account;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,8 @@ public class FixedTermDepositsDto {
     @Positive(message = "El valor del amount debe ser mayor que cero")
     @NotNull(message = "Campo amount es OBLIGATORIO")
     private double amount;
+
+    private Account account;
 
   
 }

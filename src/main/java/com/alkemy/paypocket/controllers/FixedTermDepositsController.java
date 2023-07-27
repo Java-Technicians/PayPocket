@@ -36,8 +36,6 @@ public class FixedTermDepositsController {
 
             return ResponseEntity.badRequest().body(erros);
         }
-
-
         try {
             return ResponseEntity.ok(fixedDeposits.simulate(depositDto));
 
@@ -47,5 +45,31 @@ public class FixedTermDepositsController {
         }
 
     }
+
+    @PostMapping(path = "")
+    public ResponseEntity<?> newTermDeposit(@RequestBody @Valid FixedTermDepositsDto depositDto, BindingResult result) {
+
+        //Errores varios si se envia info faltante
+        if (result.hasErrors()) {
+            List<String> erros = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.badRequest().body(erros);
+        }
+        try {
+            return ResponseEntity.ok(fixedDeposits.saveTermDeposit(depositDto));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+
+    }
+
+
+
+  
 
 }
