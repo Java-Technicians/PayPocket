@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.mappers;
 
+import com.alkemy.paypocket.dtos.PaymentDto;
 import com.alkemy.paypocket.dtos.TransactionDto;
 import com.alkemy.paypocket.entities.Transaction;
 import com.alkemy.paypocket.repositories.AccountRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+
 @Component
 public class TransactionMapper {
 
@@ -29,6 +31,8 @@ public class TransactionMapper {
         newTransaction.setDescription(transactionDto.getDescription());
 
         return newTransaction;
+
     }
+
 
 }
