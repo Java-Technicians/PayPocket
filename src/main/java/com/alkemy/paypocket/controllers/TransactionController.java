@@ -28,6 +28,7 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping(path = "/deposit")
+
     public ResponseEntity<ResponseData<Transaction>> registerDeposit(@RequestBody TransactionDto transactionDto){
 
         ResponseData<Transaction> responseData = transactionService.saveDeposit(transactionDto);

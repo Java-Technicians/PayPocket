@@ -19,11 +19,11 @@ public class TransactionMapper {
     @Autowired
     AccountRepository accountRepository;
 
-
     public Transaction toTransaction(TransactionDto transactionDto){
 
         Transaction newTransaction = new Transaction();
 
+        newTransaction.setAccount(accountRepository.findById(transactionDto.getAccountId()).get());
         newTransaction.setType(transactionDto.getType());
         newTransaction.setAmount(transactionDto.getAmount());
         newTransaction.setTransactionDate(LocalDate.now());
