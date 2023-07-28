@@ -33,10 +33,10 @@ public class AccountService {
 
 
     public Account saveAccount(AccountDto accountDto)throws Exception {
-        
+
         Account newAccount = accountMapper.toAccount(accountDto);
         accountRepository.save(newAccount);
-    
+
         return newAccount;
     }
 
@@ -105,22 +105,4 @@ public class AccountService {
     }
 
 
-    public Double updateBalance(Transaction transaction){
-
-        Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
-
-        if ("DEPOSITO".equals(transaction.getType()) || "INCOME".equals(transaction.getType())) {
-            account.setBalance(account.getBalance() + transaction.getAmount());
-        } else if ("PAYMENT".equals(transaction.getType())) {
-            account.setBalance(account.getBalance() - transaction.getAmount());
-        } else {
-            throw new IllegalArgumentException("Tipo de transacción inválido");
-        }
-
-        accountRepository.save(account);
-
-        return account.getBalance();
-
-
-    }
 }

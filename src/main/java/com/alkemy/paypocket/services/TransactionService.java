@@ -25,7 +25,7 @@ public class TransactionService {
     @Autowired
     AccountService accountService;
 
-    public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto){
+    public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto) {
 
         try {
             transactionDto.setType("DEPOSITO"); /*Al ser solicitado por el EndPoint de deposito seteo el type en DEPOSITO*/
@@ -33,7 +33,6 @@ public class TransactionService {
             if (validDeposit(transactionDto)){
 
                 Transaction transaction = transactionMapper.toTransaction(transactionDto);
-
 
                 Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
 
@@ -43,10 +42,7 @@ public class TransactionService {
 
                 transactionRepository.save(transaction);
 
-
-                return new ResponseData<>(transaction,"Transaccion Guardada");
-
-
+                return new ResponseData<>(transaction, "Transaccion Guardada");
             }else{
                 return new ResponseData<>(null, "Transaccion no valida");
             }
