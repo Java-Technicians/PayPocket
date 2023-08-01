@@ -26,7 +26,4 @@ public class CreditCardDto {
     @NotNull(message = "Campo account OBLIGATORIO")
     private  Integer  account_id;
 
-    @NotNull(message = "Campo user OBLIGATORIO")
-    private Integer user_id;
-
 }

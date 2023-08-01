@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Boolean existsByCurrency (String currency);
 
     List<Account> findAllByUser_Id(Integer userId);
+
+    Boolean existsByUserIdAndCurrency (Integer userID, String currency);
 }
