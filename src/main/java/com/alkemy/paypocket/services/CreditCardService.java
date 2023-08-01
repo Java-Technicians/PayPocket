@@ -1,7 +1,9 @@
 package com.alkemy.paypocket.services;
 
 import com.alkemy.paypocket.dtos.CreditCardDto;
+import com.alkemy.paypocket.dtos.UserDto;
 import com.alkemy.paypocket.entities.CreditCard;
+import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.mappers.CreditCardMapper;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.repositories.CreditCardRepository;
@@ -54,6 +56,28 @@ public class CreditCardService {
 
         }catch (Exception e){
             return e.getMessage();
+        }
+
+    }
+
+    public ResponseData<CreditCardDto> updateCreditCard(CreditCardDto creditCardDto, Integer id){
+        CreditCard creditCardtoUpdate = creditCardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tarjeta de credito no encontrada con el ID: " + id));
+
+        try {
+
+            if (!creditCardtoUpdate.getSoftDelete()){
+
+                creditCardtoUpdate.setAmountAvailable(creditCardDto.getAmountAvailable());
+                creditCardRepository.save(creditCardtoUpdate);
+
+                return new ResponseData<>(creditCardMapper.toCreditCardDto(creditCardtoUpdate), "Usuario Actualizado") ;
+            }else {
+                throw new RuntimeException("Usuario ya eliminado");
+            }
+
+        }catch (Exception e){
+            return new ResponseData<>(null, e.getMessage());
         }
 
     }

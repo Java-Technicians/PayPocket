@@ -54,4 +54,14 @@ public class CreditCardController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PatchMapping (path = "/{card_id}")
+    public ResponseEntity<?> updateCreditCard(@PathVariable("card_id") Integer id, @RequestBody @Valid CreditCardDto creditCardDto, BindingResult bindingResult) {
+        try {
+            creditCardService.updateCreditCard(creditCardDto, id);
+            return ResponseEntity.ok("Monto disponible de la tarjeta actualizado");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
