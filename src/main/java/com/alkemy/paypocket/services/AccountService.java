@@ -32,12 +32,24 @@ public class AccountService {
 
 
 
-    public Account saveAccount(AccountDto accountDto)throws Exception {
+    public ResponseData<AccountDto> saveAccount(AccountDto accountDto) {
 
-        Account newAccount = accountMapper.toAccount(accountDto);
-        accountRepository.save(newAccount);
+        try {
+            Account newAccount = accountMapper.toAccount(accountDto);
 
-        return newAccount;
+            if (accountRepository.existsByUserIdAndCurrency(newAccount.getUser().getId(), newAccount.getCurrency())){
+                throw new IllegalArgumentException("Ya existe un currency de este tipo asociado a este usuario");
+            }
+
+            AccountDto newAccountDto = accountMapper.toAccountDto(newAccount);
+
+            accountRepository.save(newAccount);
+
+            return new ResponseData<>(newAccountDto, "Registro exitoso");
+        }catch (Exception e){
+            return new ResponseData<>(null, e.getMessage());
+        }
+
     }
 
     public ResponseData<Account> updateAccount(AccountDto accountDto, Integer id) {
@@ -80,27 +92,9 @@ public class AccountService {
 
     }
 
-    public Boolean compareAccountCurrency(Account accountSender, Account accountIncome){
+    public Boolean compareAccountCurrencyARS(Account accountSender, Account accountIncome){
 
-        List<Account> accountsSender = findAllAccountByUser(accountSender.getUser().getId());
-        List<Account> accountsIncome = findAllAccountByUser(accountIncome.getUser().getId());
-
-        // Filtrar los Account que tengan el tipo ARS (currency)
-
-        List<Account> arsAccountSender = accountsSender.stream()
-                .filter(account -> "ARS".equals(account.getCurrency()))
-                .collect(Collectors.toList());
-
-        List<Account> arsAccountIncome = accountsIncome.stream()
-                .filter(account -> "ARS".equals(account.getCurrency()))
-                .collect(Collectors.toList());
-
-        Boolean haveARSaccountSender = !arsAccountSender.isEmpty();
-        Boolean haveARSaccountIncome = !arsAccountIncome.isEmpty();
-
-
-        return (haveARSaccountIncome && haveARSaccountSender);
-
+        return "ARS".equals(accountSender.getCurrency()) && "ARS".equals(accountIncome.getCurrency());
 
     }
 

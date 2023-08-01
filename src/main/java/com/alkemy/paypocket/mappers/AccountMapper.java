@@ -51,5 +51,18 @@ public class AccountMapper {
         return account;
     }
 
+    public AccountDto toAccountDto(Account account){
+
+        AccountDto newAccountDto = new AccountDto();
+
+        newAccountDto.setBalance(account.getBalance());
+        newAccountDto.setCurrency(account.getCurrency());
+        newAccountDto.setUser_id(account.getUser().getId());
+        newAccountDto.setTransactionLimit(account.getTransactionLimit());
+
+        return  newAccountDto;
+
+    }
+
 
 }

@@ -23,13 +23,26 @@ public class TransactionMapper {
 
         Transaction newTransaction = new Transaction();
 
-        newTransaction.setAccount(accountRepository.findById(transactionDto.getAccountId()).get());
+        newTransaction.setAccount(accountRepository.findById(transactionDto.getAccountDestination()).get());
         newTransaction.setType(transactionDto.getType());
         newTransaction.setAmount(transactionDto.getAmount());
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setDescription(transactionDto.getDescription());
 
         return newTransaction;
+
+    }
+
+    public TransactionDto transactionDto(Transaction transaction){
+
+        TransactionDto newTransactionDto = new TransactionDto();
+
+        newTransactionDto.setType(transaction.getType());
+        newTransactionDto.setAmount(transaction.getAmount());
+        newTransactionDto.setAccountDestination(transaction.getAccount().getId_account());
+        newTransactionDto.setDescription(transaction.getDescription());
+
+        return  newTransactionDto;
 
     }
 

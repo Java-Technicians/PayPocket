@@ -1,9 +1,7 @@
 package com.alkemy.paypocket.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "credit_card")
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 
 
 public class CreditCard {
@@ -41,11 +39,6 @@ public class CreditCard {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;

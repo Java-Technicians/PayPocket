@@ -1,21 +1,18 @@
 package com.alkemy.paypocket.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Getter
 @Setter
-@ToString
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id") //Se añadió para solucionar conflictos en CreditCard
 
 public class User {
     @Id
@@ -48,7 +45,5 @@ public class User {
     @Column(name = "soft_delete")
     private Boolean softDelete;
 
-    @OneToMany(mappedBy = "user")
-    private List<CreditCard> creditCards;
 
 }
