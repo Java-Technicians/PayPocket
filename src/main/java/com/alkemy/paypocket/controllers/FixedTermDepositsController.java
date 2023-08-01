@@ -3,6 +3,8 @@ package com.alkemy.paypocket.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,14 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "fixedTermDeposit")
+@Tag(name = "Fixed Term Deposits", description = "Controlador de Fixed Term Deposits.")
 public class FixedTermDepositsController {
 
     @Autowired
     FixedTermDepositsService fixedDeposits;
 
     @PostMapping(path = "/simulate")
+    @Operation(summary = "Simular", description = "Simula un Fixed Term Deposit.")
     public ResponseEntity<?> simulate(@RequestBody @Valid FixedTermDepositsDto depositDto, BindingResult result) {
 
         //Errores varios si se envia info faltante
@@ -47,6 +51,7 @@ public class FixedTermDepositsController {
     }
 
     @PostMapping(path = "")
+    @Operation(summary = "Crear", description = "Crea un Fixed Term Deposit.")
     public ResponseEntity<?> newTermDeposit(@RequestBody @Valid FixedTermDepositsDto depositDto, BindingResult result) {
 
         //Errores varios si se envia info faltante
@@ -70,6 +75,6 @@ public class FixedTermDepositsController {
 
 
 
-  
+
 
 }

@@ -1,12 +1,12 @@
 package com.alkemy.paypocket.entities;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 
@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Entidad Role")
 @Table(name = "roles")
 public class Role {
     @Id

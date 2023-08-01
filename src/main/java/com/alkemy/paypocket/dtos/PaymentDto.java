@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(name = "Payment DTO", description = "DTO de Payment")
 public class PaymentDto {
 
     @NotBlank(message = "Campo amount obligatorio")

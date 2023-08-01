@@ -1,13 +1,11 @@
 package com.alkemy.paypocket.entities;
 
-
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Entity
@@ -15,11 +13,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Entidad Credit Card")
 @Table(name = "credit_card")
-
-
-
-
 public class CreditCard {
 
     @Id

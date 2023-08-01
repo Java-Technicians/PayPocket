@@ -1,9 +1,8 @@
 package com.alkemy.paypocket.entities;
 
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 
@@ -12,8 +11,8 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Entidad User")
 @Table(name = "user")
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
