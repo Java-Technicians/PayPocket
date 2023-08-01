@@ -8,8 +8,12 @@ import com.alkemy.paypocket.entities.Transaction;
 import com.alkemy.paypocket.mappers.TransactionMapper;
 import com.alkemy.paypocket.repositories.AccountRepository;
 import com.alkemy.paypocket.repositories.TransactionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 
 @Service
 public class TransactionService {
@@ -27,14 +31,14 @@ public class TransactionService {
 
     public ResponseData<TransactionDto> saveDeposit(TransactionDto transactionDto) {
 
-        try {
             transactionDto.setType("DEPOSITO"); /*Al ser solicitado por el EndPoint de deposito seteo el type en DEPOSITO*/
             transactionDto.setDescription("DEPOSITO");
+
             if (validDeposit(transactionDto)){
 
                 Transaction transaction = transactionMapper.toTransaction(transactionDto);
 
-                Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+                Account account = accountRepository.findById(transaction.getAccount().getAccount_id()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
 
                 account.setBalance(accountService.updateBalance(transaction));
 
@@ -47,14 +51,11 @@ public class TransactionService {
 
                 return new ResponseData<>(newTransactionDto, "Transaccion Guardada");
             }else{
-                return new ResponseData<>(null, "Transaccion no valida");
+                throw new RuntimeException("Fondos Insuficientes");
             }
 
 
-        } catch (Exception e) {
 
-            return new ResponseData<>(null, "Error al registrar transaccion");
-        }
 
     }
 
@@ -65,7 +66,6 @@ public class TransactionService {
 
     public ResponseData<Transaction> saveSentARS(TransactionDto transactionDto, Integer user_id) {
 
-        try {
 
             Transaction transactionIncome = saveTransactionIncome(transactionDto);
             Transaction transactionSender = saveTransactionSender(transactionIncome, user_id);
@@ -78,37 +78,58 @@ public class TransactionService {
 
                 if (checkBalance(accountSender, transactionSender.getAmount())){
                     if (accountService.compareAccountCurrencyARS(accountSender, accountIncome)){
-                        if (!accountIncome.getId_account().equals(accountSender.getId_account())){
+                        if (!accountIncome.getAccount_id().equals(accountSender.getAccount_id())){
+                            if (!checkAmount(transactionSender.getAmount())){
 
-                            accountService.updateBalance(transactionIncome);
-                            accountService.updateBalance(transactionSender);
+                                accountService.updateBalance(transactionIncome);
+                                accountService.updateBalance(transactionSender);
 
-                            transactionRepository.save(transactionIncome);
-                            transactionRepository.save(transactionSender);
+                                transactionRepository.save(transactionIncome);
+                                transactionRepository.save(transactionSender);
 
-                            return new ResponseData<>(transactionSender, "Transaccion Guardada");
+                                return new ResponseData<>(transactionSender, "Transaccion Guardada");
+                            }else {
+                                throw new RuntimeException("Error no se puede enviar saldos negativos");
+                            }
                         }else {
-                            return new ResponseData<>(null, "Error No se puede enviar dinero a una misma cuenta");
+                            throw new IllegalArgumentException("Error No se puede enviar dinero a una misma cuenta");
                         }
                     }else {
-                        return new ResponseData<>(null, "Error Ambas cuentas tienen que ser en ARS los tipos de currency");
+                        throw new IllegalArgumentException("Error Ambas cuentas tienen que ser en ARS");
                     }
                 }else {
-                    return new ResponseData<>(null, "Error de Balance");
+                    throw new IllegalArgumentException("Error de Balance");
                 }
             }else {
-                return new ResponseData<>(null, "Error de limite transaccion");
+                throw new IllegalArgumentException("Error de limite de transaccion");
             }
 
+    }
 
+    public List<Transaction> getAllTransactions(){
 
-        } catch (Exception e) {
-            e.printStackTrace(); // Imprime el error en la consola (opcional)
-            return new ResponseData<>(null, "Error al registrar transaccion");
-        }
+        List<Transaction> allTransactions = transactionRepository.findAll();
 
+        return allTransactions;
 
     }
+
+    public List<Transaction> getAllTransactionsByAccount(Integer accountID){
+
+        Account account = accountRepository.findById(accountID).orElseThrow(() ->  new EntityNotFoundException("Account Inexistente"));
+
+        if (!account.isSoftDelete()){
+
+            List<Transaction> allTransactionsByAccount = transactionRepository.findAllByAccount_Id(accountID);
+
+            return allTransactionsByAccount;
+        }else {
+            throw new IllegalArgumentException("Cuenta Eliminada");
+        }
+
+    }
+
+
 
     private Transaction saveTransactionSender(Transaction transaction, Integer user_Id) {
 
@@ -139,6 +160,12 @@ public class TransactionService {
     private Boolean checkBalance(Account account, Double amount) {
         return amount <= account.getBalance();
     }
+
+    private Boolean checkAmount(Double amount){
+        return amount <= 0;
+    }
+
+
 
 
 
