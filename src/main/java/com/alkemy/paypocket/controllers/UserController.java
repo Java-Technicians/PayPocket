@@ -15,6 +15,8 @@ import java.util.List;
 import com.alkemy.paypocket.dtos.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 
 import java.util.stream.Collectors;
@@ -27,12 +29,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar", description = "Lista los usuarios.")
-    public ResponseEntity<List<User>> getUsers(){
-        List<User> userList = userService.findAll();
-        return ResponseEntity.ok(userList);
+    public ResponseEntity<List<User>> getUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<User> usersPage = userService.findAllByExample(pageRequest);
+
+        List<User> usersList = usersPage.getContent();
+
+        return ResponseEntity.ok(usersList);
     }
 
     @DeleteMapping(path = "user/{user_id}")
@@ -42,11 +50,12 @@ public class UserController {
         return ResponseEntity.ok().build();
 
     }
+
     @PostMapping(path = "/register")
     @Operation(summary = "Agregar", description = "Agrega un usuario.")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto, BindingResult result ){
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto, BindingResult result) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             List<String> erros = result.getAllErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -60,14 +69,15 @@ public class UserController {
 
     @GetMapping(path = "/user/{user_id}")
     @Operation(summary = "Obtener", description = "Obtiene un usuario por medio del id de cuenta.")
-    public ResponseEntity<?> getUser(@PathVariable("user_id") Integer id){
+    public ResponseEntity<?> getUser(@PathVariable("user_id") Integer id) {
         return ResponseEntity.ok(userService.findUser(id));
     }
 
     @PatchMapping(path = "/user/{user_id}")
     @Operation(summary = "Editar", description = "Edita un usuario.")
-    public ResponseEntity<?> updateUser(@PathVariable("user_id") Integer user_id, @RequestBody @Valid UserDto userDto, BindingResult result){
-        if (result.hasErrors()){
+    public ResponseEntity<?> updateUser(@PathVariable("user_id") Integer user_id, @RequestBody @Valid UserDto userDto,
+            BindingResult result) {
+        if (result.hasErrors()) {
             List<String> erros = result.getAllErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -78,7 +88,5 @@ public class UserController {
 
         return ResponseEntity.ok(userService.updateUser(userDto, user_id));
     }
-
-
 
 }
