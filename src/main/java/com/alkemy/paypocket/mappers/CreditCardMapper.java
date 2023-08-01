@@ -28,7 +28,7 @@ public class CreditCardMapper {
         Optional<Account> account = accountRepository.findById(creditCardDto.getAccount_id());
 
         if (!account.isPresent() || account.get().isSoftDelete()){
-            throw  new IllegalArgumentException("Usuario con ID " + account.get().getAccount_id() + " no encontrado.");
+            throw  new IllegalArgumentException("Usuario con ID " + account.get().getId() + " no encontrado.");
         }
 
         creditCard.setAccount(account.get());
@@ -44,7 +44,7 @@ public class CreditCardMapper {
         creditCardDto.setName(creditCard.getName());
         creditCardDto.setAmountAvailable(creditCard.getAmountAvailable());
         creditCardDto.setAmount(creditCard.getAmount());
-        creditCardDto.setAccount_id(creditCard.getAccount().getAccount_id());
+        creditCardDto.setAccount_id(creditCard.getAccount().getId());
 
         return creditCardDto;
 

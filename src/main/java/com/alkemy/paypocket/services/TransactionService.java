@@ -38,7 +38,7 @@ public class TransactionService {
 
                 Transaction transaction = transactionMapper.toTransaction(transactionDto);
 
-                Account account = accountRepository.findById(transaction.getAccount().getAccount_id()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+                Account account = accountRepository.findById(transaction.getAccount().getId()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
 
                 account.setBalance(accountService.updateBalance(transaction));
 
@@ -78,7 +78,7 @@ public class TransactionService {
 
                 if (checkBalance(accountSender, transactionSender.getAmount())){
                     if (accountService.compareAccountCurrencyARS(accountSender, accountIncome)){
-                        if (!accountIncome.getAccount_id().equals(accountSender.getAccount_id())){
+                        if (!accountIncome.getId().equals(accountSender.getId())){
                             if (!checkAmount(transactionSender.getAmount())){
 
                                 accountService.updateBalance(transactionIncome);
