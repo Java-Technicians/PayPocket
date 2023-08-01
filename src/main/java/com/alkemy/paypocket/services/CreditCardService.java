@@ -87,6 +87,11 @@ public class CreditCardService {
     public List<CreditCard> getAllCreditCards() {
         return creditCardRepository.findAll();
     }
+
+    public CreditCard findCreditCardById(Integer creditCardId) {
+        return creditCardRepository.findById(creditCardId)
+                .orElseThrow(() -> new EntityNotFoundException("Tarjeta de crédito no encontrada con el ID: " + creditCardId));
+    }
 }
 
 

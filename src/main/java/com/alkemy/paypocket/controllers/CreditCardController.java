@@ -6,6 +6,7 @@ import com.alkemy.paypocket.entities.CreditCard;
 import com.alkemy.paypocket.services.CreditCardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -74,5 +75,17 @@ public class CreditCardController {
     public ResponseEntity<List<CreditCard>> getAllCreditCards() {
         List<CreditCard> creditCards = creditCardService.getAllCreditCards();
         return new ResponseEntity<>(creditCards, HttpStatus.OK);
+    }
+
+    @GetMapping("/{creditCardId}")
+    public ResponseEntity<CreditCard> getCreditCardById(@PathVariable Integer creditCardId) {
+        try {
+            CreditCard creditCard = creditCardService.findCreditCardById(creditCardId);
+            return ResponseEntity.ok(creditCard);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
