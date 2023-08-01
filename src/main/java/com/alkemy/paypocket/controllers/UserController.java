@@ -2,6 +2,9 @@ package com.alkemy.paypocket.controllers;
 
 import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "auth")
+@Tag(name = "Usuario", description = "Controlador del usuario.")
 public class UserController {
 
     @Autowired
@@ -25,18 +29,21 @@ public class UserController {
 
 
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Listar", description = "Lista los usuarios.")
     public ResponseEntity<List<User>> getUsers(){
         List<User> userList = userService.findAll();
         return ResponseEntity.ok(userList);
     }
 
     @DeleteMapping(path = "user/{user_id}")
+    @Operation(summary = "Eliminar", description = "Elimina un usuario que este pasado por id.")
     public ResponseEntity<?> deleteUser(@PathVariable("user_id") Integer id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
 
     }
     @PostMapping(path = "/register")
+    @Operation(summary = "Agregar", description = "Agrega un usuario.")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto, BindingResult result ){
 
         if (result.hasErrors()){
@@ -52,11 +59,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/user/{user_id}")
+    @Operation(summary = "Obtener", description = "Obtiene una cuenta por id del usuario.")
     public ResponseEntity<?> getUser(@PathVariable("user_id") Integer id){
         return ResponseEntity.ok(userService.findUser(id));
     }
 
     @PatchMapping(path = "/user/{user_id}")
+    @Operation(summary = "Obtener", description = "Obtiene una cuenta por id del usuario.")
     public ResponseEntity<?> updateUser(@PathVariable("user_id") Integer user_id, @RequestBody @Valid UserDto userDto, BindingResult result){
         if (result.hasErrors()){
             List<String> erros = result.getAllErrors()

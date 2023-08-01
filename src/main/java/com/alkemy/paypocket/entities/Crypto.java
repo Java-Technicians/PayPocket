@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Table(name = "crypto")
 public class Crypto {
     @Id

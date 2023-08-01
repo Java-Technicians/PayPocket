@@ -3,6 +3,7 @@ package com.alkemy.paypocket.dtos;
 
 import java.time.LocalDate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.alkemy.paypocket.entities.Account;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(name = "Fixed Term Deposits DTO", description = "DTO de Fixed Term Deposits")
 public class FixedTermDepositsDto {
 
     @NotNull(message = "Campo createDate es OBLIGATORIO")
