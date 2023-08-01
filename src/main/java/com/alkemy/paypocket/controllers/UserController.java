@@ -59,13 +59,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/user/{user_id}")
-    @Operation(summary = "Obtener", description = "Obtiene una cuenta por id del usuario.")
+    @Operation(summary = "Obtener", description = "Obtiene un usuario por medio del id de cuenta.")
     public ResponseEntity<?> getUser(@PathVariable("user_id") Integer id){
         return ResponseEntity.ok(userService.findUser(id));
     }
 
     @PatchMapping(path = "/user/{user_id}")
-    @Operation(summary = "Obtener", description = "Obtiene una cuenta por id del usuario.")
+    @Operation(summary = "Editar", description = "Edita un usuario.")
     public ResponseEntity<?> updateUser(@PathVariable("user_id") Integer user_id, @RequestBody @Valid UserDto userDto, BindingResult result){
         if (result.hasErrors()){
             List<String> erros = result.getAllErrors()
