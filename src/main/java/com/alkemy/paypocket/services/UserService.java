@@ -5,9 +5,16 @@ import com.alkemy.paypocket.dtos.UserDto;
 import com.alkemy.paypocket.mappers.UserMapper;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.repositories.UserRepository;
+
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +33,16 @@ public class UserService {
                 .stream()
                 .filter(User -> !User.getSoftDelete())
                 .toList();
+    }
+
+    public Page<User> findAllByExample(Pageable pageable) {
+        User user = new User();
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<User> example = Example.of(user, matcher);
+        return userRepository.findAll(example, pageable);
     }
 
     public void deleteUser(Integer id) {
@@ -100,4 +117,6 @@ public class UserService {
         }
 
     }
+
+
 }
