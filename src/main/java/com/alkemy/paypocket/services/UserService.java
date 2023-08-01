@@ -3,6 +3,7 @@ package com.alkemy.paypocket.services;
 import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.dtos.UserDto;
 import com.alkemy.paypocket.mappers.UserMapper;
+import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,31 +40,64 @@ public class UserService {
 
     }
 
-    public User saveUser(UserDto userDto) {
+    public ResponseData<?> saveUser(UserDto userDto) {
 
-        User newUser = userMapper.toUser(userDto);
-        userRepository.save(newUser);
+        try{
 
-        return newUser;
-    }
+            User newUser = userMapper.toUser(userDto);
+            userRepository.save(newUser);
 
-    public Optional<User> findUser(Integer id){
+            UserDto newUserDto = userMapper.toDto(newUser);
 
-        if (userRepository.existsById(id)){
-            return userRepository.findById(id);
-        }else {
-            throw new RuntimeException("Usuario no encontrado");
+            return new ResponseData<>(newUserDto,"Usuario creado");
+
+
+        }catch (Exception e){
+            return new ResponseData<>(null,e.getMessage());
         }
 
     }
 
-    public User updateUser(UserDto userDto, Integer id){
+    public ResponseData<UserDto> findUser(Integer id){
+
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con el ID: " + id));
+
+        try {
+
+            if (!user.getSoftDelete()){
+                return new ResponseData<>(userMapper.toDto(user), "Usuario Encontrado") ;
+            }else {
+                throw new RuntimeException("Usuario ya Eliminado");
+            }
+
+        }catch (Exception e){
+            return new ResponseData<>(null, e.getMessage());
+        }
+
+    }
+
+    public ResponseData<UserDto> updateUser(UserDto userDto, Integer id){
         User userToUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con el ID: " + id));
-        userToUpdate.setFirstName(userDto.getFirstName());
-        userToUpdate.setLastName(userDto.getLastName());
-        userToUpdate.setPasswords(userDto.getPasswords());
-        userToUpdate.setEmail(userDto.getEmail());
-        return userRepository.save(userToUpdate);
+
+        try {
+
+            if (!userToUpdate.getSoftDelete()){
+
+                userToUpdate.setFirstName(userDto.getFirstName());
+                userToUpdate.setLastName(userDto.getLastName());
+                userToUpdate.setPasswords(userDto.getPasswords());
+                userToUpdate.setEmail(userDto.getEmail());
+                userRepository.save(userToUpdate);
+
+                return new ResponseData<>(userMapper.toDto(userToUpdate), "Usuario Actualizado") ;
+            }else {
+                throw new RuntimeException("Usuario ya Eliminado");
+            }
+
+        }catch (Exception e){
+            return new ResponseData<>(null, e.getMessage());
+        }
+
     }
 }

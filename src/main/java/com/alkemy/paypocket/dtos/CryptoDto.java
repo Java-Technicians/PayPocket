@@ -1,7 +1,7 @@
 package com.alkemy.paypocket.dtos;
 
-
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.alkemy.paypocket.entities.Account;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,19 +13,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "Credit Card DTO", description = "DTO de Credit Card")
-public class CreditCardDto {
+public class CryptoDto {
 
     @NotBlank(message = "Campo name OBLIGATORIO")
     private String name;
 
-    @NotNull(message = "Campo amountAvailable OBLIGATORIO")
-    private Double amountAvailable;
-
     @NotNull(message = "Campo amount OBLIGATORIO")
-    private Double amount;
+    private double amount;
 
-    @NotNull(message = "Campo account OBLIGATORIO")
-    private  Integer  account_id;
+    @NotNull(message = "Campo account_id OBLIGATORIO")
+    private Integer account_id;
 
 }

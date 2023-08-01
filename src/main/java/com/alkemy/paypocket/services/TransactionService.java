@@ -25,11 +25,11 @@ public class TransactionService {
     @Autowired
     AccountService accountService;
 
-    public ResponseData<Transaction> saveDeposit(TransactionDto transactionDto) {
+    public ResponseData<TransactionDto> saveDeposit(TransactionDto transactionDto) {
 
         try {
             transactionDto.setType("DEPOSITO"); /*Al ser solicitado por el EndPoint de deposito seteo el type en DEPOSITO*/
-
+            transactionDto.setDescription("DEPOSITO");
             if (validDeposit(transactionDto)){
 
                 Transaction transaction = transactionMapper.toTransaction(transactionDto);
@@ -38,18 +38,21 @@ public class TransactionService {
 
                 account.setBalance(accountService.updateBalance(transaction));
 
+                TransactionDto newTransactionDto = transactionMapper.transactionDto(transaction);
+
                 accountRepository.save(account);
 
                 transactionRepository.save(transaction);
 
-                return new ResponseData<>(transaction, "Transaccion Guardada");
+
+                return new ResponseData<>(newTransactionDto, "Transaccion Guardada");
             }else{
                 return new ResponseData<>(null, "Transaccion no valida");
             }
 
 
         } catch (Exception e) {
-            e.printStackTrace(); // Imprime el error en la consola (opcional)
+
             return new ResponseData<>(null, "Error al registrar transaccion");
         }
 
@@ -74,7 +77,7 @@ public class TransactionService {
             if (checkTransactionLimit(accountSender, transactionSender.getAmount())){
 
                 if (checkBalance(accountSender, transactionSender.getAmount())){
-                    if (accountService.compareAccountCurrency(accountSender, accountIncome)){
+                    if (accountService.compareAccountCurrencyARS(accountSender, accountIncome)){
                         if (!accountIncome.getId_account().equals(accountSender.getId_account())){
 
                             accountService.updateBalance(transactionIncome);
@@ -85,10 +88,10 @@ public class TransactionService {
 
                             return new ResponseData<>(transactionSender, "Transaccion Guardada");
                         }else {
-                            return new ResponseData<>(null, "Error de Coincidencia de tipo de Account");
+                            return new ResponseData<>(null, "Error No se puede enviar dinero a una misma cuenta");
                         }
                     }else {
-                        return new ResponseData<>(null, "Error de Coincidencia de tipo de Currency");
+                        return new ResponseData<>(null, "Error Ambas cuentas tienen que ser en ARS los tipos de currency");
                     }
                 }else {
                     return new ResponseData<>(null, "Error de Balance");

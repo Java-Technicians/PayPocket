@@ -22,6 +22,6 @@ public class TransactionDto {
     private String description;
 
     @NotBlank(message = "Error de referencia")
-    private Integer accountId;
+    private Integer accountDestination;
 
 }
