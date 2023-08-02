@@ -39,7 +39,7 @@ public class TransactionMapper {
 
         newTransactionDto.setType(transaction.getType());
         newTransactionDto.setAmount(transaction.getAmount());
-        newTransactionDto.setAccountDestination(transaction.getAccount().getId_account());
+        newTransactionDto.setAccountDestination(transaction.getAccount().getId());
         newTransactionDto.setDescription(transaction.getDescription());
 
         return  newTransactionDto;

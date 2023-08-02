@@ -2,6 +2,7 @@ package com.alkemy.paypocket.controllers;
 import com.alkemy.paypocket.services.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +23,54 @@ public class TransactionController {
 
     @PostMapping(path = "/deposit")
     @Operation(summary = "Depositar", description = "Registra un deposito.")
-    public ResponseEntity<ResponseData<TransactionDto>> registerDeposit(@RequestBody TransactionDto transactionDto){
+    public ResponseEntity<?> registerDeposit(@RequestBody TransactionDto transactionDto){
 
-        ResponseData<TransactionDto> responseData = transactionService.saveDeposit(transactionDto);
 
-        return ResponseEntity.ok(responseData);
+
+        try {
+            ResponseData<TransactionDto> responseData = transactionService.saveDeposit(transactionDto);
+
+            return new ResponseEntity<>(responseData, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(path = "/sendArs/{user_id}")
     @Operation(summary = "Transaccion en ARS", description = "Registra una transaccion en ARS.")
     public ResponseEntity<?> registerTransactionArs(@PathVariable("user_id") Integer user_id, @RequestBody TransactionDto transactionDto){
 
-        return ResponseEntity.ok(transactionService.saveSentARS(transactionDto, user_id));
+        try {
+            return ResponseEntity.ok(transactionService.saveSentARS(transactionDto, user_id));
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
+    @GetMapping(path = "")
+    public ResponseEntity<?> getAllTransactions(){
+
+        try {
+
+            return ResponseEntity.ok(transactionService.getAllTransactions());
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping(path = "/{account_id}")
+    public ResponseEntity<?> getAllTransactionsByAccount(@PathVariable("account_id") Integer account_id){
+
+        try {
+
+            return ResponseEntity.ok(transactionService.getAllTransactionsByAccount(account_id));
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

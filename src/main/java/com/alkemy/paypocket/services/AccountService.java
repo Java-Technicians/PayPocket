@@ -76,7 +76,7 @@ public class AccountService {
 
     public Double updateBalance(Transaction transaction){
 
-        Account account = accountRepository.findById(transaction.getAccount().getId_account()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+        Account account = accountRepository.findById(transaction.getAccount().getId()).orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
 
         if ("DEPOSITO".equals(transaction.getType()) || "INCOME".equals(transaction.getType())) {
             account.setBalance(account.getBalance() + transaction.getAmount());
