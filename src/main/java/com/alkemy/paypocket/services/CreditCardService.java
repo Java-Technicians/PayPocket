@@ -1,9 +1,7 @@
 package com.alkemy.paypocket.services;
 
 import com.alkemy.paypocket.dtos.CreditCardDto;
-import com.alkemy.paypocket.dtos.UserDto;
 import com.alkemy.paypocket.entities.CreditCard;
-import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.mappers.CreditCardMapper;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.repositories.CreditCardRepository;

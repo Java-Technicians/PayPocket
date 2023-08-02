@@ -9,7 +9,12 @@ import com.alkemy.paypocket.mappers.TransactionMapper;
 import com.alkemy.paypocket.repositories.AccountRepository;
 import com.alkemy.paypocket.repositories.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -112,6 +117,17 @@ public class TransactionService {
 
         return allTransactions;
 
+    }
+
+
+    public Page<Transaction> findAllByPagination(Pageable pageable) {
+        Transaction transaction = new Transaction();
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Transaction> example = Example.of(transaction, matcher);
+        return transactionRepository.findAll(example, pageable);
     }
 
     public List<Transaction> getAllTransactionsByAccount(Integer accountID){

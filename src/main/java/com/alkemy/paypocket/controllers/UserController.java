@@ -3,7 +3,6 @@ package com.alkemy.paypocket.controllers;
 import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,7 +35,7 @@ public class UserController {
             @RequestParam(defaultValue = "10") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> usersPage = userService.findAllByExample(pageRequest);
+        Page<User> usersPage = userService.findAllByPagination(pageRequest);
 
         List<User> usersList = usersPage.getContent();
 

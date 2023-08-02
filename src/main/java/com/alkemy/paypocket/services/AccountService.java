@@ -6,11 +6,17 @@ import java.util.stream.Collectors;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import com.alkemy.paypocket.dtos.AccountDto;
 import com.alkemy.paypocket.entities.Account;
 import com.alkemy.paypocket.mappers.AccountMapper;
 import com.alkemy.paypocket.repositories.AccountRepository;
+
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class AccountService {
@@ -28,6 +34,18 @@ public class AccountService {
         return allAccounts.stream()
                 .filter(account -> !account.isSoftDelete() && !account.getUser().getSoftDelete())
                 .collect(Collectors.toList());
+    }
+
+
+    public Page<Account> findAllAccountPaginationByUser(Pageable pageable) {
+        Account account = new Account();
+        account.setSoftDelete(false);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Account> example = Example.of(account, matcher);
+        return accountRepository.findAll(example, pageable);
     }
 
 

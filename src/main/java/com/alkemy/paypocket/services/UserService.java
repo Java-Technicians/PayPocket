@@ -35,7 +35,7 @@ public class UserService {
                 .toList();
     }
 
-    public Page<User> findAllByExample(Pageable pageable) {
+    public Page<User> findAllByPagination(Pageable pageable) {
         User user = new User();
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreNullValues()
