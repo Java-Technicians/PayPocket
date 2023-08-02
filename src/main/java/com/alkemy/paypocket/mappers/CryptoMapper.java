@@ -1,6 +1,5 @@
 package com.alkemy.paypocket.mappers;
 
-import com.alkemy.paypocket.dtos.AccountDto;
 import com.alkemy.paypocket.dtos.CryptoDto;
 import com.alkemy.paypocket.entities.Account;
 import com.alkemy.paypocket.entities.Crypto;
