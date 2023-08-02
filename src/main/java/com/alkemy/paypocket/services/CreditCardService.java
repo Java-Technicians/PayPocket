@@ -1,15 +1,15 @@
 package com.alkemy.paypocket.services;
 
 import com.alkemy.paypocket.dtos.CreditCardDto;
-import com.alkemy.paypocket.dtos.UserDto;
 import com.alkemy.paypocket.entities.CreditCard;
-import com.alkemy.paypocket.entities.User;
 import com.alkemy.paypocket.mappers.CreditCardMapper;
 import com.alkemy.paypocket.message.ResponseData;
 import com.alkemy.paypocket.repositories.CreditCardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -60,6 +60,7 @@ public class CreditCardService {
 
     }
 
+
     public ResponseData<CreditCardDto> updateCreditCard(CreditCardDto creditCardDto, Integer id){
         CreditCard creditCardtoUpdate = creditCardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tarjeta de credito no encontrada con el ID: " + id));
@@ -80,6 +81,16 @@ public class CreditCardService {
             return new ResponseData<>(null, e.getMessage());
         }
 
+    }
+
+
+    public List<CreditCard> getAllCreditCards() {
+        return creditCardRepository.findAll();
+    }
+
+    public CreditCard findCreditCardById(Integer creditCardId) {
+        return creditCardRepository.findById(creditCardId)
+                .orElseThrow(() -> new EntityNotFoundException("Tarjeta de crédito no encontrada con el ID: " + creditCardId));
     }
 }
 
