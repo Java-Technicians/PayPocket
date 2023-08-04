@@ -44,9 +44,9 @@ public class TransactionController {
         }
     }
 
-    @PostMapping(path = "/sendArs/{user_id}")
+    @PostMapping(path = "/sendArs/{account_id}")
     @Operation(summary = "Transaccion en ARS", description = "Registra una transaccion en ARS.")
-    public ResponseEntity<?> registerTransactionArs(@PathVariable("user_id") Integer user_id, @RequestBody TransactionDto transactionDto){
+    public ResponseEntity<?> registerTransactionArs(@PathVariable("account_id") Integer user_id, @RequestBody TransactionDto transactionDto){
 
         try {
             return ResponseEntity.ok(transactionService.saveSentARS(transactionDto, user_id));
