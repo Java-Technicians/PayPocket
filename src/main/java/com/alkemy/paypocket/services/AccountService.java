@@ -92,10 +92,15 @@ public class AccountService {
 
     }
 
+
     public Boolean compareAccountCurrencyARS(Account accountSender, Account accountIncome){
 
         return "ARS".equals(accountSender.getCurrency()) && "ARS".equals(accountIncome.getCurrency());
 
+    }
+
+    public Boolean compareAccountCurrencyUSD(Account accountSender, Account accountIncome){
+        return "USD".equals(accountSender.getCurrency()) && "USD".equals(accountIncome.getCurrency());
     }
 
 

@@ -1,5 +1,6 @@
 package com.alkemy.paypocket.mappers;
 
+import com.alkemy.paypocket.dtos.PlazoFijoDto;
 import org.springframework.stereotype.Component;
 
 import com.alkemy.paypocket.dtos.FixedTermDepositsDto;
@@ -19,6 +20,19 @@ public class FixedTermDepositsMapper {
         newFixedDeposit.setAmount(transactionDto.getAmount());
 
         return newFixedDeposit;
+    }
+
+    public PlazoFijoDto ToplazoFijoDto (Fixed_term_deposits fixedTermDeposits){
+
+        PlazoFijoDto plazoFijo = new PlazoFijoDto();
+
+        plazoFijo.setAmount(fixedTermDeposits.getAmount());
+        plazoFijo.setInterest(fixedTermDeposits.getInterest());
+        plazoFijo.setCreationDate(fixedTermDeposits.getCreationDate());
+        plazoFijo.setClosingDate(fixedTermDeposits.getClosingDate());
+
+        return plazoFijo;
+
     }
     
 }
