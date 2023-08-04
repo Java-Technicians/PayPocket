@@ -27,6 +27,7 @@ public class CreditCardController {
     CreditCardService creditCardService;
 
 
+    @Operation(summary = "Crear", description = "Crea una Credit Card.")
     @PostMapping(path = "/register")
     public ResponseEntity<?> newCreditCart (@RequestBody @Valid CreditCardDto creditCardDto, BindingResult bindingResult){
 
@@ -61,6 +62,7 @@ public class CreditCardController {
         }
     }
 
+    @Operation(summary = "Actualizar", description = "Actualiza una Credit Card por id.")
     @PatchMapping (path = "/{card_id}")
     public ResponseEntity<?> updateCreditCard(@PathVariable("card_id") Integer id, @RequestBody @Valid CreditCardDto creditCardDto, BindingResult bindingResult) {
         try {
@@ -71,12 +73,14 @@ public class CreditCardController {
         }
     }
 
+    @Operation(summary = "Mostrar", description = "Muestra todas las Credit Card.")
     @GetMapping
     public ResponseEntity<List<CreditCard>> getAllCreditCards() {
         List<CreditCard> creditCards = creditCardService.getAllCreditCards();
         return new ResponseEntity<>(creditCards, HttpStatus.OK);
     }
 
+    @Operation(summary = "Obtener", description = "Obtiene una Credit Card por id.")
     @GetMapping("/{creditCardId}")
     public ResponseEntity<CreditCard> getCreditCardById(@PathVariable Integer creditCardId) {
         try {
