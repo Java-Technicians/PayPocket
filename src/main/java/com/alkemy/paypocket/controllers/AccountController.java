@@ -2,9 +2,11 @@ package com.alkemy.paypocket.controllers;
 
 import java.util.List;
 
+import com.alkemy.paypocket.services.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import jakarta.validation.Valid;
 public class AccountController {
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    TransactionService transactionService;
 
     @PostMapping(path = "")
     @Operation(summary = "Registrar", description = "Agrega una cuenta.")
@@ -48,5 +53,18 @@ public class AccountController {
     @Operation(summary = "Obtener", description = "Obtiene una cuenta por id de la cuenta.")
     public ResponseEntity<?> updateAccount(@PathVariable("account_id") Integer id, @RequestBody @Valid AccountDto accountDto, BindingResult result){
         return ResponseEntity.ok(accountService.updateAccount(accountDto, id));
+    }
+
+    @GetMapping(path = "/balance/{user_id}")
+    public ResponseEntity<?> getBalanceByUser(@PathVariable("user_id") Integer user_id){
+
+        try {
+
+            return ResponseEntity.ok(transactionService.getBalance(user_id));
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

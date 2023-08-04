@@ -1,7 +1,7 @@
 package com.alkemy.paypocket.mappers;
 
-import com.alkemy.paypocket.dtos.PaymentDto;
-import com.alkemy.paypocket.dtos.TransactionDto;
+
+import com.alkemy.paypocket.dtos.*;
 import com.alkemy.paypocket.entities.Transaction;
 import com.alkemy.paypocket.repositories.AccountRepository;
 import com.alkemy.paypocket.repositories.TransactionRepository;
@@ -46,5 +46,51 @@ public class TransactionMapper {
 
     }
 
+    public TransaccionDepositDto toTransaccionDto(Transaction transaction){
+
+        TransaccionDepositDto transaccionDepositDto = new TransaccionDepositDto();
+
+        transaccionDepositDto.setAccountDestination(transaction.getAccount().getId());
+        transaccionDepositDto.setAmount(transaction.getAmount());
+        transaccionDepositDto.setTransactionDate(transaction.getTransactionDate());
+
+        return transaccionDepositDto;
+    }
+
+    public PaymentGetDto toPayment(Transaction transaction){
+
+        PaymentGetDto paymentGetDto = new PaymentGetDto();
+
+        paymentGetDto.setAmount(transaction.getAmount());
+        paymentGetDto.setPaymetDate(transaction.getTransactionDate());
+
+        return paymentGetDto;
+
+    }
+
+    public SendARSDto toSendARS(Transaction transaction, Integer accountOrigin){
+
+        SendARSDto sendARSDto = new SendARSDto();
+
+        sendARSDto.setAccountDestination(transaction.getAccount().getId());
+        sendARSDto.setAccountOrigin(accountOrigin);
+        sendARSDto.setAmountSender(transaction.getAmount());
+        sendARSDto.setTransactionDate(transaction.getTransactionDate());
+
+        return sendARSDto;
+    }
+
+    public TrasactionGetDto trasactionGetDto(Transaction transaction){
+
+        TrasactionGetDto trasactionGetDto = new TrasactionGetDto();
+
+        trasactionGetDto.setTransactionID(transaction.getId());
+        trasactionGetDto.setAmount(transaction.getAmount());
+        trasactionGetDto.setType(transaction.getType());
+        trasactionGetDto.setTransactionDate(transaction.getTransactionDate());
+
+        return trasactionGetDto;
+
+    }
 
 }
