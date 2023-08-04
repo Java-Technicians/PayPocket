@@ -57,6 +57,7 @@ public class TransactionController {
 
     }
 
+    @Operation(summary = "Transaccion en USD", description = "Registra una transaccion en USD.")
     @PostMapping(path = "/sendUSD/{user_id}")
     public ResponseEntity<?> registerTransactionUSD(@PathVariable("user_id") Integer user_id, @RequestBody @Valid TransactionDto transactionDto, BindingResult bindingResult){
         try {
@@ -76,6 +77,7 @@ public class TransactionController {
         }
     }
 
+    @Operation(summary = "Crear", description = "Crea una transaccion.")
     @GetMapping(path = "")
     public ResponseEntity<?> getAllTransactions(){
 
@@ -89,6 +91,7 @@ public class TransactionController {
 
     }
 
+    @Operation(summary = "Obtener", description = "Obtiene una transaccion por id.")
     @GetMapping(path = "/{account_id}")
     public ResponseEntity<?> getAllTransactionsByAccount(@PathVariable("account_id") Integer account_id){
 
@@ -101,6 +104,7 @@ public class TransactionController {
         }
     }
 
+    @Operation(summary = "Enviar", description = "Envia una pago de una transaccion.")
     @PostMapping(path = "/paymet")
     public ResponseEntity<?> registerPaymet(@RequestBody PaymetDto paymetDto){
 

@@ -50,11 +50,12 @@ public class AccountController {
     }
 
     @PatchMapping(path = "/{account_id}")
-    @Operation(summary = "Obtener", description = "Obtiene una cuenta por id de la cuenta.")
+    @Operation(summary = "Actualizar", description = "Actualiza una cuenta por id de la cuenta.")
     public ResponseEntity<?> updateAccount(@PathVariable("account_id") Integer id, @RequestBody @Valid AccountDto accountDto, BindingResult result){
         return ResponseEntity.ok(accountService.updateAccount(accountDto, id));
     }
 
+    @Operation(summary = "Traer", description = "Trae el balance de todas las cuentas de un usuario.")
     @GetMapping(path = "/balance/{user_id}")
     public ResponseEntity<?> getBalanceByUser(@PathVariable("user_id") Integer user_id){
 
